@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Unit 6 – Adventures (Class 7) | Colombo Americano</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  html, body { height: 100%; margin: 0; }
+  body { font-family: 'Nunito', sans-serif; background: #ecfeff; overflow: hidden; }
+  h1, h2, h3, h4 { font-family: 'Fredoka One', cursive; font-weight: normal; }
+
+  .slide { position: absolute; inset: 0; opacity: 0; transform: translateX(60px); pointer-events: none; transition: opacity .4s ease, transform .4s ease; overflow-y: auto; padding: 1rem 1.5rem 6rem 1.5rem; }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .slide.prev { transform: translateX(-60px); }
+  .slide::-webkit-scrollbar { width: 8px; }
+  .slide::-webkit-scrollbar-thumb { background: #67e8f9; border-radius: 8px; }
+
+  .transition-top { border-left: 6px solid #0891b2; background: linear-gradient(to right, #cffafe, #ecfeff); padding: 12px 18px; border-radius: 0 14px 14px 0; margin-bottom: 18px; color: #155e75; font-weight: 600; font-size: 1rem; }
+  .transition-bottom { border-left: 6px solid #f59e0b; background: linear-gradient(to right, #fef3c7, #fffbeb); padding: 12px 18px; border-radius: 0 14px 14px 0; margin-top: 20px; color: #92400e; font-weight: 600; font-size: 1rem; }
+  .badge { background: linear-gradient(135deg, #0891b2, #0e7490); color: white; padding: 3px 12px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
+  .help-phrases { background: #fef3c7; border: 2px solid #f59e0b; padding: 10px 14px; border-radius: 12px; margin-top: 10px; color: #92400e; font-size: 0.9rem; }
+
+  /* Guess Cards */
+  .guess-card { background: #cffafe; border: 3px solid #06b6d4; border-radius: 16px; padding: 16px; cursor: pointer; transition: 0.3s; min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .guess-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(6,182,212,0.25); }
+  .guess-card .reveal { display: none; font-size: 2rem; margin-top: 6px; }
+  .guess-card.flipped { background: #dcfce7; border-color: #16a34a; }
+  .guess-card.flipped .description { display: none; }
+  .guess-card.flipped .reveal { display: block; }
+  .guess-card .description { font-size: 0.9rem; font-weight: 700; color: #155e75; font-style: italic; }
+
+  /* Broken Phone */
+  .bp-message { background: #fef3c7; border: 3px dashed #f59e0b; border-radius: 16px; padding: 20px; font-size: 1.15rem; font-weight: 700; color: #92400e; text-align: center; }
+
+  /* Story Dictation */
+  .dictation-text { background: #fff7ed; border: 3px solid #f97316; border-radius: 16px; padding: 16px; font-size: 1rem; font-weight: 600; color: #7c2d12; line-height: 1.6; }
+
+  /* Storyboard */
+  .storyboard-panel { background: white; border: 3px solid #0891b2; border-radius: 16px; padding: 12px; text-align: center; cursor: pointer; transition: 0.2s; min-height: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+  .storyboard-panel:hover { transform: scale(1.03); box-shadow: 0 10px 20px rgba(6,182,212,0.2); }
+  .storyboard-panel .reveal-text { display: none; font-size: 0.8rem; font-weight: 700; color: #0891b2; margin-top: 6px; }
+  .storyboard-panel.flipped .reveal-text { display: block; }
+
+  /* Reading story */
+  .story-text { background: #f0f9ff; border-left: 6px solid #0891b2; border-radius: 0 16px 16px 0; padding: 16px; font-size: 0.95rem; line-height: 1.7; color: #0f172a; }
+
+  .event-item { background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 10px; padding: 8px 12px; margin-bottom: 4px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
+  .event-item .num { font-weight: 800; color: #0891b2; }
+
+  /* Grammar spotlight */
+  .grammar-spotlight { background: linear-gradient(145deg, #ffffff, #f0f9ff); border: 4px solid #0891b2; border-radius: 24px; padding: 24px; box-shadow: 0 15px 35px rgba(8,145,178,0.15); }
+  .gp-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; text-align: center; margin-bottom: 12px; }
+  .gp-col { padding: 12px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; }
+  .gp-people { background: #dbeafe; color: #1e40af; }
+  .gp-things { background: #fef3c7; color: #92400e; }
+  .gp-places { background: #dcfce7; color: #166534; }
+  .gp-aff { background: #dcfce7; border: 2px solid #16a34a; padding: 8px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; color: #166534; }
+  .gp-neg { background: #fee2e2; border: 2px solid #dc2626; padding: 8px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; color: #991b1b; }
+  .gp-que { background: #dbeafe; border: 2px solid #2563eb; padding: 8px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; color: #1e40af; }
+
+  /* Jeopardy */
+  .jeopardy-board { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
+  .jeopardy-cat { background: linear-gradient(135deg, #0891b2, #0e7490); color: white; font-weight: 800; padding: 12px; border-radius: 12px; text-align: center; font-size: 0.9rem; }
+  .jeopardy-cell { background: #f0f9ff; border: 3px solid #0891b2; border-radius: 12px; padding: 16px; text-align: center; font-weight: 800; font-size: 1.2rem; color: #0e7490; cursor: pointer; transition: 0.2s; }
+  .jeopardy-cell:hover { background: #cffafe; transform: scale(1.05); }
+  .jeopardy-cell.used { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; border-color: #9ca3af; }
+
+  /* Story Ending */
+  .story-starter { background: #fef3c7; border-left: 6px solid #f59e0b; border-radius: 0 16px 16px 0; padding: 20px; font-size: 1rem; line-height: 1.7; color: #92400e; font-style: italic; }
+
+  /* Trip Guide */
+  .trip-sample { background: #f0fdf4; border: 3px solid #22c55e; border-radius: 16px; padding: 16px; font-size: 0.85rem; line-height: 1.6; color: #14532d; }
+
+  /* Menu */
+  .menu-panel { position: fixed; top: 0; left: 0; height: 100vh; width: 320px; background: white; box-shadow: 8px 0 30px rgba(0,0,0,0.15); transform: translateX(-100%); transition: transform .3s ease; z-index: 100; overflow-y: auto; }
+  .menu-panel.open { transform: translateX(0); }
+  .menu-item { display: block; width: 100%; text-align: left; padding: 12px 20px; border: none; background: none; cursor: pointer; font-weight: 600; color: #155e75; border-bottom: 1px solid #cffafe; transition: 0.2s; font-size: 0.85rem; }
+  .menu-item:hover { background: #ecfeff; }
+  .menu-item.active { background: #0891b2; color: white; }
+
+  #progress-bar { transition: width .4s ease; }
+
+  /* Volcano */
+  .volcano-container { display: flex; align-items: center; gap: 8px; flex: 1; }
+  .volcano-track { flex: 1; height: 22px; background: #e5e7eb; border-radius: 99px; overflow: hidden; position: relative; }
+  .volcano-fill { height: 100%; width: 0%; background: #22c55e; transition: width .4s ease, background .4s ease; border-radius: 99px; }
+  .volcano-fill.level-1 { background: #22c55e; }
+  .volcano-fill.level-2 { background: #84cc16; }
+  .volcano-fill.level-3 { background: #eab308; }
+  .volcano-fill.level-4 { background: #f97316; }
+  .volcano-fill.level-5 { background: #ef4444; }
+  .volcano-fill.level-6 { background: #b91c1c; animation: pulse-red 1s infinite; }
+  @keyframes pulse-red { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+  .spanish-btn { background: linear-gradient(135deg, #dc2626, #991b1b); color: white; font-weight: 800; padding: 6px 14px; border-radius: 10px; cursor: pointer; border: none; transition: 0.2s; font-size: 0.85rem; }
+  .spanish-btn:hover { transform: scale(1.05); }
+
+  .toast { position: fixed; top: 130px; left: 50%; transform: translateX(-50%) translateY(-20px); background: white; border-radius: 16px; padding: 16px 28px; box-shadow: 0 15px 40px rgba(0,0,0,0.25); font-weight: 700; font-size: 1.1rem; z-index: 200; opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none; max-width: 90%; text-align: center; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.warning-1 { border-left: 8px solid #eab308; color: #854d0e; }
+  .toast.warning-2 { border-left: 8px solid #f97316; color: #9a3412; }
+
+  /* Modals */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 300; opacity: 0; pointer-events: none; transition: opacity .3s; padding: 20px; }
+  .modal-overlay.show { opacity: 1; pointer-events: auto; }
+  .modal-card { background: white; border-radius: 24px; padding: 32px; max-width: 600px; width: 100%; box-shadow: 0 25px 60px rgba(0,0,0,0.4); border-top: 10px solid #dc2626; transform: scale(0.9); transition: transform .3s; max-height: 90vh; overflow-y: auto; }
+  .modal-overlay.show .modal-card { transform: scale(1); }
+  .modal-card.eruption { border-top-color: #7c2d12; background: linear-gradient(180deg, #fef3c7, #ffffff); }
+  .scope-badge { display: inline-block; padding: 6px 14px; border-radius: 99px; font-weight: 700; font-size: 0.8rem; margin: 4px; }
+  .scope-person { background: #fef3c7; color: #92400e; }
+  .scope-group { background: #fed7aa; color: #9a3412; }
+  .scope-class { background: #fecaca; color: #991b1b; }
+  .category-badge { display: inline-block; padding: 6px 14px; border-radius: 99px; font-weight: 700; font-size: 0.8rem; margin: 4px; }
+  .category-silly { background: #dbeafe; color: #1e40af; }
+  .category-productive { background: #dcfce7; color: #166534; }
+  .category-eruption { background: #fca5a5; color: #7f1d1d; }
+  .penalty-text { font-size: 1.15rem; font-weight: 700; color: #1f2937; padding: 18px; background: #f9fafb; border-radius: 14px; margin-top: 12px; line-height: 1.5; }
+  .roll-btn { background: linear-gradient(135deg, #0891b2, #0e7490); color: white; font-weight: 800; padding: 12px 24px; border-radius: 12px; border: none; cursor: pointer; font-size: 1rem; }
+  .roll-btn:hover { transform: scale(1.03); }
+  .accept-btn { background: linear-gradient(135deg, #16a34a, #15803d); color: white; font-weight: 800; padding: 12px 32px; border-radius: 12px; border: none; cursor: pointer; font-size: 1rem; }
+  .accept-btn:hover { transform: scale(1.03); }
+  .reveal-btn-sm { background: #0891b2; color: white; padding: 4px 12px; border-radius: 99px; font-size: 0.7rem; font-weight: 700; cursor: pointer; border: none; }
+
+  @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-4px); } 40%,80% { transform: translateX(4px); } }
+  .shaking { animation: shake 0.5s; }
+</style>
+</head>
+<body class="h-screen flex flex-col">
+
+<header class="flex-shrink-0 bg-white border-b-2 border-cyan-200 z-40 shadow-sm">
+  <div class="flex items-center justify-between px-4 py-2">
+    <div class="flex items-center gap-3">
+      <button onclick="toggleMenu()" class="text-cyan-600 text-2xl font-bold px-2 hover:bg-cyan-100 rounded-lg transition">☰</button>
+      <img src="https://www.colomboamericano.edu.co/wp-content/uploads/2024/06/Logo-Colombo-Horizontal.png" alt="Colombo Americano" class="h-9 object-contain" />
+    </div>
+    <div class="text-center hidden md:block">
+      <p class="text-xs font-bold text-cyan-500 uppercase tracking-wider">Unit 6 • Adventures</p>
+      <p class="text-sm font-bold text-gray-700">Class 7 – Grammar, Story & Games</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span id="star-tracker" class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-full">⭐ Session: 0</span>
+      <span id="slide-counter" class="badge">1 / 12</span>
+    </div>
+  </div>
+  <div class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-50 via-red-50 to-orange-50 border-t border-cyan-200">
+    <span class="text-2xl">🌋</span>
+    <div class="volcano-container">
+      <div class="volcano-track"><div id="volcano-fill" class="volcano-fill level-1"></div></div>
+      <span id="volcano-percent" class="font-bold text-gray-700 text-sm w-12 text-right">0%</span>
+    </div>
+    <button class="spanish-btn" onclick="clickSpanish()">🚨 I Heard Spanish!</button>
+    <button onclick="resetVolcano()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-3 py-1.5 rounded-lg text-sm">↺ Reset</button>
+    <button onclick="showReward()" class="bg-amber-400 hover:bg-amber-500 text-amber-900 font-bold px-3 py-1.5 rounded-lg text-sm">🏁 End Class</button>
+  </div>
+  <div class="h-1 bg-cyan-100"><div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 to-blue-500" style="width: 8%"></div></div>
+</header>
+
+<div id="menu-panel" class="menu-panel">
+  <div class="p-4 bg-cyan-600 text-white"><p class="font-bold text-lg">Slide Menu</p><p class="text-xs text-cyan-100">Click any slide to jump</p></div>
+  <button class="menu-item" onclick="goToSlide(0)">1. Cover</button>
+  <button class="menu-item" onclick="goToSlide(1)">2. Guess the Object!</button>
+  <button class="menu-item" onclick="goToSlide(2)">3. Broken Phone Challenge</button>
+  <button class="menu-item" onclick="goToSlide(3)">4. Story Dictation</button>
+  <button class="menu-item" onclick="goToSlide(4)">5. Storyboarding</button>
+  <button class="menu-item" onclick="goToSlide(5)">6. Reading: An Accident in the Mountains</button>
+  <button class="menu-item" onclick="goToSlide(6)">7. Grammar: Indefinite Pronouns</button>
+  <button class="menu-item" onclick="goToSlide(7)">8. Grammar: should / must / need to</button>
+  <button class="menu-item" onclick="goToSlide(8)">9. Jeopardy Team Competition</button>
+  <button class="menu-item" onclick="goToSlide(9)">10. Create Your Own Ending</button>
+  <button class="menu-item" onclick="goToSlide(10)">11. Trip Guide Mini-Poster</button>
+  <button class="menu-item" onclick="goToSlide(11)">12. Closing</button>
+</div>
+<div id="menu-overlay" class="fixed inset-0 bg-black/30 hidden z-50" onclick="toggleMenu()"></div>
+
+<div id="toast" class="toast"></div>
+
+<!-- PENALTY MODAL -->
+<div id="penalty-modal" class="modal-overlay">
+  <div class="modal-card" id="penalty-card">
+    <div class="text-center mb-3"><span id="penalty-level-badge" class="badge">LEVEL 3</span></div>
+    <h2 id="penalty-title" class="text-center text-3xl font-bold text-red-700 mb-3">🌋 PENALTY!</h2>
+    <div class="text-center">
+      <span id="penalty-scope" class="scope-badge scope-person">👤 Person</span>
+      <span id="penalty-category" class="category-badge category-silly">🎪 Silly</span>
+    </div>
+    <div id="penalty-text" class="penalty-text"></div>
+    <div id="reveal-answer-wrapper" class="hidden mt-3 text-center">
+      <button onclick="revealPenaltyAnswer()" class="bg-amber-500 text-white font-bold px-5 py-2 rounded-full text-sm">🔎 Reveal Answer</button>
+      <div id="reveal-answer-text" class="hidden mt-3 p-3 bg-green-100 rounded-xl text-sm font-semibold text-green-700"></div>
+    </div>
+    <div class="flex justify-center gap-3 mt-5 flex-wrap">
+      <button class="roll-btn" onclick="rerollPenalty()">🎲 Roll New</button>
+      <button class="accept-btn" onclick="closePenaltyModal()">✅ Accept & Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- REWARD MODAL -->
+<div id="reward-modal" class="modal-overlay">
+  <div class="modal-card" style="text-align:center;">
+    <div id="reward-content"></div>
+    <button class="accept-btn mt-6" onclick="closeRewardModal()">Close</button>
+  </div>
+</div>
+
+<main class="flex-1 relative overflow-hidden">
+
+<!-- SLIDE 1: COVER -->
+<section class="slide active">
+  <div class="max-w-4xl mx-auto">
+    <div class="transition-top">
+      🏔️ <strong>Welcome to Class 7!</strong> Today we continue Unit 6: Adventures. We'll play games, read a story about an accident in the mountains, learn about indefinite pronouns, and create our own endings. Ready for an adventure?
+    </div>
+    <div class="bg-gradient-to-r from-cyan-600 to-blue-600 rounded-3xl p-8 md:p-12 text-white shadow-2xl border-b-8 border-cyan-300 text-center">
+      <h1 class="text-5xl md:text-6xl font-bold mb-3 drop-shadow-lg">🏔️ Unit 6</h1>
+      <h2 class="text-3xl md:text-4xl font-bold text-cyan-100 mb-6">Adventures</h2>
+      <p class="text-xl font-semibold text-cyan-100">Class 7 – Grammar, Story & Games</p>
+      <div class="mt-8 bg-white/20 p-5 rounded-2xl backdrop-blur-sm border border-white/30 text-left">
+        <h3 class="text-2xl font-bold text-cyan-100 mb-3">🎯 Today's Mission</h3>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-white font-semibold">
+          <li>✓ Guess outdoor objects from descriptions</li>
+          <li>✓ Play Broken Phone with camping messages</li>
+          <li>✓ Read <em>An Accident in the Mountains</em></li>
+          <li>✓ Master indefinite pronouns & modals</li>
+          <li>✓ Create your own story ending</li>
+          <li>✓ Plan a real trip in Colombia</li>
+        </ul>
+      </div>
+    </div>
+    <div class="transition-bottom">
+      ➡️ <strong>Let's start with a game!</strong> Can you guess the object from the description? Teams, get ready to raise your hands!
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2: GUESS THE OBJECT -->
+<section class="slide">
+  <div class="max-w-5xl mx-auto">
+    <div class="transition-top">
+      🕵️ <strong>Guess the Object!</strong> Read each description carefully. The description uses words like <em>someone, something, anywhere</em>. Which camping object is it? The first team to raise their hand gets a point!
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">🕵️</span>
+      <h2 class="text-3xl text-cyan-600">Guess the Object!</h2>
+      <span class="ml-auto badge">12 min</span>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="guess-card" onclick="this.classList.toggle('flipped')">
+        <p class="description">"Someone uses this to find their way in the mountains. It shows you where north is."</p>
+        <div class="reveal">🧭<br><strong>compass</strong></div>
+      </div>
+      <div class="guess-card" onclick="this.classList.toggle('flipped')">
+        <p class="description">"Something you carry on your back. Everything you need fits inside."</p>
+        <div class="reveal">🎒<br><strong>rucksack</strong></div>
+      </div>
+      <div class="guess-card" onclick="this.classList.toggle('flipped')">
+        <p class="description">"You use these to start a fire. No one can cook without them."</p>
+        <div class="reveal">🔥<br><strong>matches</strong></div>
+      </div>
+      <div class="guess-card" onclick="this.classList.toggle('flipped')">
+        <p class="description">"You put this on a small cut. Something in it helps you heal."</p>
+        <div class="reveal">🩹<br><strong>plaster</strong></div>
+      </div>
+      <div class="guess-card" onclick="this.classList.toggle('flipped')">
+        <p class="description">"If someone is hurt, you open this. Everything you need is inside."</p>
+        <div class="reveal">🩹<br><strong>first-aid kit</strong></div>
+      </div>
+      <div class="guess-card" onclick="this.classList.toggle('flipped')">
+        <p class="description">"You sleep on this on the ground. Nowhere is comfortable without it."</p>
+        <div class="reveal">🛏️<br><strong>sleeping mat</strong></div>
+      </div>
+      <div class="guess-card" onclick="this.classList.toggle('flipped')">
+        <p class="description">"You put this around you when it's cold. Anyone would want one at night."</p>
+        <div class="reveal">🛌<br><strong>blanket</strong></div>
+      </div>
+      <div class="guess-card" onclick="this.classList.toggle('flipped')">
+        <p class="description">"You sleep inside this outdoors. It keeps you dry when it rains."</p>
+        <div class="reveal">⛺<br><strong>shelter</strong></div>
+      </div>
+    </div>
+
+    <div class="help-phrases mt-4">
+      <p class="font-bold">💬 Discussion after the game:</p>
+      <p>Which indefinite pronouns did you notice? (someone, something, nowhere, anything, everything, no one...)</p>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>Excellent guessing!</strong> Now let's test your listening. This next game is called "Broken Phone" — and it's as funny as it sounds!
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 3: BROKEN PHONE -->
+<section class="slide">
+  <div class="max-w-4xl mx-auto">
+    <div class="transition-top">
+      📞 <strong>Broken Phone Challenge!</strong> Teams form lines. The teacher shows a secret message to the LAST person in each line. They whisper it down the line. The FIRST person says it out loud (or writes it on the board). The team with the most accurate message wins!
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">📞</span>
+      <h2 class="text-3xl text-cyan-600">Broken Phone Challenge</h2>
+      <span class="ml-auto badge">15 min</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="bg-cyan-50 p-4 rounded-2xl border-2 border-cyan-300">
+        <h3 class="font-bold text-cyan-800 mb-2">🎯 Rules</h3>
+        <ul class="text-sm text-gray-700 space-y-1">
+          <li>✅ Whisper <strong>once</strong> to the next person.</li>
+          <li>✅ Only English!</li>
+          <li>❌ No repeating.</li>
+          <li>❌ No writing until the last person.</li>
+          <li>🏆 Most accurate message wins the round.</li>
+        </ul>
+      </div>
+      <div class="bg-amber-50 p-4 rounded-2xl border-2 border-amber-300">
+        <h3 class="font-bold text-amber-800 mb-2">🎭 The 3 Rounds</h3>
+        <ul class="text-sm text-gray-700 space-y-1">
+          <li><strong>Round 1:</strong> Short message (7 words).</li>
+          <li><strong>Round 2:</strong> Medium message (11 words).</li>
+          <li><strong>Round 3 (bonus):</strong> Long message (14 words) = 2 points!</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-white p-4 rounded-2xl border-2 border-cyan-300 mb-3">
+      <h3 class="font-bold text-cyan-800 mb-3">📨 The Messages (reveal one at a time)</h3>
+
+      <div class="mb-3">
+        <p class="text-sm font-bold text-cyan-700 mb-2">Round 1:</p>
+        <button onclick="toggle('bp1')" class="reveal-btn-sm">🔍 Show Message</button>
+        <div id="bp1" class="hidden bp-message mt-2">"Someone forgot their compass, so we got lost."</div>
+      </div>
+
+      <div class="mb-3">
+        <p class="text-sm font-bold text-cyan-700 mb-2">Round 2:</p>
+        <button onclick="toggle('bp2')" class="reveal-btn-sm">🔍 Show Message</button>
+        <div id="bp2" class="hidden bp-message mt-2">"Everyone was tired, and no one wanted to walk anywhere."</div>
+      </div>
+
+      <div>
+        <p class="text-sm font-bold text-cyan-700 mb-2">Round 3 (bonus):</p>
+        <button onclick="toggle('bp3')" class="reveal-btn-sm">🔍 Show Message</button>
+        <div id="bp3" class="hidden bp-message mt-2">"There's nothing to eat, and I can't find anything in my rucksack!"</div>
+      </div>
+    </div>
+
+    <div class="help-phrases">
+      <p class="font-bold">💬 If you forget the message, say:</p>
+      <p>"Sorry, can you repeat?" • "I think it was..." • "I don't remember, please say it again."</p>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>What a mess!</strong> Now let's move to a quieter activity. Time for a listening and writing challenge: the Story Dictation!
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4: STORY DICTATION -->
+<section class="slide">
+  <div class="max-w-5xl mx-auto">
+    <div class="transition-top">
+      ✍️ <strong>Story Dictation!</strong> I will read two paragraphs of a story about Sammy and Hannah. Group A writes paragraph 1. Group B writes paragraph 2. Then groups swap papers and correct each other's mistakes!
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">✍️</span>
+      <h2 class="text-3xl text-cyan-600">Story Dictation</h2>
+      <span class="ml-auto badge">20 min</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="bg-cyan-50 p-4 rounded-2xl border-2 border-cyan-300">
+        <h3 class="font-bold text-cyan-800 mb-2">📝 Group A – Paragraph 1</h3>
+        <p class="text-sm text-gray-600 mb-3">Listen and write. The teacher will read it twice.</p>
+        <button onclick="toggle('dict1')" class="reveal-btn-sm">🔍 Reveal Paragraph 1</button>
+        <div id="dict1" class="hidden dictation-text mt-2">
+          Sammy, Hannah and their dad were drinking hot chocolate in a café in the mountains. It was the last day of their skiing holiday. Dad said it was getting late, so they needed to go back to the village. Hannah wanted to ski through the forest.
+        </div>
+      </div>
+      <div class="bg-amber-50 p-4 rounded-2xl border-2 border-amber-300">
+        <h3 class="font-bold text-amber-800 mb-2">📝 Group B – Paragraph 2</h3>
+        <p class="text-sm text-gray-600 mb-3">Listen and write. The teacher will read it twice.</p>
+        <button onclick="toggle('dict2')" class="reveal-btn-sm">🔍 Reveal Paragraph 2</button>
+        <div id="dict2" class="hidden dictation-text mt-2">
+          While they were skiing, Hannah fell over. She hurt her head and had a pain in her leg. Dad's phone didn't work, so Sammy skied to the village to get help. Soon a rescue team arrived to take Hannah back home.
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-green-50 p-4 rounded-2xl border-2 border-green-300">
+      <h3 class="font-bold text-green-800 mb-2">🔄 Peer-Correction Step</h3>
+      <p class="text-sm text-gray-700">Swap papers with the other group. Use a red pen to circle mistakes (spelling, missing words, etc.). Then return the paper and compare with the correct version on screen.</p>
+    </div>
+
+    <div class="help-phrases mt-4">
+      <p class="font-bold">💬 Help Phrases:</p>
+      <p>"Can you repeat that, please?" • "How do you spell...?" • "I missed the last word."</p>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>Great writing!</strong> Now let's see the actual story. First, let's look at some pictures that show what happens.
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 5: STORYBOARDING -->
+<section class="slide">
+  <div class="max-w-5xl mx-auto">
+    <div class="transition-top">
+      🎬 <strong>Storyboarding!</strong> Before we read the full story, look at these 6 emoji panels. With your partner, guess what is happening in each panel. Write 1–2 sentences for each. Then we'll reveal the answers!
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">🎬</span>
+      <h2 class="text-3xl text-cyan-600">Storyboarding: An Accident in the Mountains</h2>
+      <span class="ml-auto badge">10 min</span>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      <div class="storyboard-panel" onclick="this.classList.toggle('flipped')">
+        <div class="text-5xl mb-2">☕👨‍👩‍👧</div>
+        <p class="text-xs font-bold text-gray-500">Panel 1</p>
+        <p class="reveal-text">A family is drinking hot chocolate in a café.</p>
+      </div>
+      <div class="storyboard-panel" onclick="this.classList.toggle('flipped')">
+        <div class="text-5xl mb-2">🎿🌲</div>
+        <p class="text-xs font-bold text-gray-500">Panel 2</p>
+        <p class="reveal-text">They decide to ski through the forest.</p>
+      </div>
+      <div class="storyboard-panel" onclick="this.classList.toggle('flipped')">
+        <div class="text-5xl mb-2">🤕❄️</div>
+        <p class="text-xs font-bold text-gray-500">Panel 3</p>
+        <p class="reveal-text">Hannah falls and gets hurt.</p>
+      </div>
+      <div class="storyboard-panel" onclick="this.classList.toggle('flipped')">
+        <div class="text-5xl mb-2">📱🚫</div>
+        <p class="text-xs font-bold text-gray-500">Panel 4</p>
+        <p class="reveal-text">Dad's phone doesn't work.</p>
+      </div>
+      <div class="storyboard-panel" onclick="this.classList.toggle('flipped')">
+        <div class="text-5xl mb-2">🛷🏘️</div>
+        <p class="text-xs font-bold text-gray-500">Panel 5</p>
+        <p class="reveal-text">Sammy brings a rescue team to help.</p>
+      </div>
+      <div class="storyboard-panel" onclick="this.classList.toggle('flipped')">
+        <div class="text-5xl mb-2">🏥👨‍⚕️</div>
+        <p class="text-xs font-bold text-gray-500">Panel 6</p>
+        <p class="reveal-text">Hannah is taken to the village and the doctor helps her.</p>
+      </div>
+    </div>
+
+    <div class="help-phrases mt-4">
+      <p class="font-bold">💬 Help Phrases for your predictions:</p>
+      <p>"I think..." • "Maybe they are..." • "It looks like..." • "Someone is..." • "Something is..."</p>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>Great predictions!</strong> Now let's read the actual story together. Open your books to page 76.
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: READING -->
+<section class="slide">
+  <div class="max-w-5xl mx-auto">
+    <div class="transition-top">
+      📖 <strong>Let's read: "An Accident in the Mountains."</strong> Read carefully. Then in your notebook, number the events in the correct order (1–7).
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">📖</span>
+      <h2 class="text-3xl text-cyan-600">Reading: An Accident in the Mountains</h2>
+      <span class="ml-auto badge">15 min</span>
+      <span class="text-sm font-bold text-gray-400">📘 p.76</span>
+    </div>
+
+    <div class="story-text mb-4">
+      It was the last day of their skiing holiday. Sammy, Hannah and their dad were drinking hot chocolate in a café in the mountains. 'We should go back to the village,' said Dad. 'It's getting late.' 'Can we ski through the forest?' asked Hannah. The children were good at skiing, so he said, 'Yes, but we must be quick.' 'Wait! Help me put my helmet on,' said Sammy, but Hannah was already skiing. 'You're such a baby!' she shouted.<br><br>
+      Sammy and Dad were following Hannah when they heard someone. 'Ouch!' They found Hannah sitting in the snow. 'I fell over,' she cried. 'I've hurt my head and I have a pain in my leg.' 'Keep still! You mustn't try to move,' said Sammy. 'I learned first aid at school.' 'We need to get help,' said Dad. He was pressing buttons on his phone, but it didn't work.<br><br>
+      'Dad, you should wait here with Hannah. She's had an accident. She needs to keep warm. I'll go and get help,' said Sammy. 'Dad, you should go with him,' said Hannah. 'You don't need to stay with me.' 'No! We mustn't leave Hannah alone,' said Sammy. 'OK, Sammy. Keep safe!' said Dad.<br><br>
+      Sammy skied to the village. He told the rescue team about the accident. It was getting dark when Sammy and a man arrived in a snowmobile, which was pulling a rescue sledge. Soon Hannah was back in the village. 'You've broken your leg. You need to rest,' said the doctor. 'Thank you, Sammy!' said Hannah. 'I shouldn't call you a baby.'
+    </div>
+
+    <div class="bg-cyan-50 p-4 rounded-2xl border-2 border-cyan-300 mb-4">
+      <h3 class="font-bold text-cyan-800 mb-3">🔢 Order the events (1–7)</h3>
+      <div class="space-y-1">
+        <div class="event-item"><span>____ a. Dad and Sammy found Hannah in the snow after the accident.</span></div>
+        <div class="event-item"><span>____ b. They decided to ski back to the village through the forest.</span></div>
+        <div class="event-item"><span>____ c. Sammy offered to get help while Dad stayed with Hannah.</span></div>
+        <div class="event-item"><span>____ d. Hannah thanked her brother and said she was sorry.</span></div>
+        <div class="event-item"><span>____ e. Hannah and her family were at a café in the mountains.</span></div>
+        <div class="event-item"><span>____ f. A rescue team came to take Hannah back to the village.</span></div>
+        <div class="event-item"><span>____ g. Hannah started skiing on her own but she fell over later.</span></div>
+      </div>
+      <button onclick="toggle('order-ans')" class="mt-3 bg-cyan-500 text-white px-4 py-2 rounded-full text-sm">🔍 Reveal Order</button>
+      <div id="order-ans" class="hidden mt-2 p-3 bg-green-100 rounded-xl text-sm font-semibold text-green-700">
+        ✅ 1=e, 2=b, 3=g, 4=a, 5=c, 6=f, 7=d
+      </div>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>Excellent reading!</strong> Now let's look at the grammar that was hiding in the story.
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 7: GRAMMAR – INDEFINITE PRONOUNS -->
+<section class="slide">
+  <div class="max-w-5xl mx-auto">
+    <div class="transition-top">
+      🔤 <strong>Grammar Spotlight: Indefinite Pronouns.</strong> We use these words when we don't know exactly who, what, or where. Let's look at the pattern, then practice with 6 sentences from your book.
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">🔤</span>
+      <h2 class="text-3xl text-cyan-600">Indefinite Pronouns</h2>
+      <span class="ml-auto badge">15 min</span>
+      <span class="text-sm font-bold text-gray-400">📘 p.75, Act.2</span>
+    </div>
+
+    <div class="grammar-spotlight mb-4">
+      <div class="gp-row">
+        <div class="gp-col gp-people">👤 People</div>
+        <div class="gp-col gp-things">🎁 Things</div>
+        <div class="gp-col gp-places">📍 Places</div>
+      </div>
+      <div class="grid grid-cols-3 gap-3 text-sm">
+        <div class="space-y-2">
+          <div class="gp-aff">✅ someone</div>
+          <div class="gp-neg">❌ no one</div>
+          <div class="gp-aff">✅ everyone</div>
+          <div class="gp-que">❓ anyone</div>
+        </div>
+        <div class="space-y-2">
+          <div class="gp-aff">✅ something</div>
+          <div class="gp-neg">❌ nothing</div>
+          <div class="gp-aff">✅ everything</div>
+          <div class="gp-que">❓ anything</div>
+        </div>
+        <div class="space-y-2">
+          <div class="gp-aff">✅ somewhere</div>
+          <div class="gp-neg">❌ nowhere</div>
+          <div class="gp-aff">✅ everywhere</div>
+          <div class="gp-que">❓ anywhere</div>
+        </div>
+      </div>
+      <div class="mt-4 p-3 bg-cyan-100 rounded-2xl text-center text-sm font-bold text-cyan-800">
+        📐 Use <span class="text-green-700">someone / something / somewhere</span> in <strong>affirmative</strong> sentences.<br>
+        📐 Use <span class="text-red-700">no one / nothing / nowhere</span> in <strong>negative</strong> sentences.<br>
+        📘 Use <span class="text-blue-700">anyone / anything / anywhere</span> in <strong>questions</strong> and <strong>negative</strong> sentences.
+      </div>
+    </div>
+
+    <div class="bg-cyan-50 p-4 rounded-2xl border-2 border-cyan-300">
+      <h3 class="font-bold text-cyan-800 mb-3">✏️ Practice: Complete the sentences in your notebook.</h3>
+      <div class="space-y-2 text-sm">
+        <div class="bg-white p-2 rounded-xl">1. Do you know <strong>anyone</strong> who has a tent?</div>
+        <div class="bg-white p-2 rounded-xl">2. Sam needs ______________ to put in his sleeping bag.
+          <button onclick="toggle('gp1')" class="ml-2 reveal-btn-sm">🔍</button>
+        </div>
+        <div id="gp1" class="hidden p-2 bg-green-100 rounded text-xs font-semibold text-green-700">✅ something</div>
+
+        <div class="bg-white p-2 rounded-xl">3. The shop's closed, so there's ______________ to buy food.
+          <button onclick="toggle('gp2')" class="ml-2 reveal-btn-sm">🔍</button>
+        </div>
+        <div id="gp2" class="hidden p-2 bg-green-100 rounded text-xs font-semibold text-green-700">✅ nowhere</div>
+
+        <div class="bg-white p-2 rounded-xl">4. I can't put ______________ in that rucksack. It's too small.
+          <button onclick="toggle('gp3')" class="ml-2 reveal-btn-sm">🔍</button>
+        </div>
+        <div id="gp3" class="hidden p-2 bg-green-100 rounded text-xs font-semibold text-green-700">✅ anything</div>
+
+        <div class="bg-white p-2 rounded-xl">5. Is there ______________ we can go for a nice dinner?
+          <button onclick="toggle('gp4')" class="ml-2 reveal-btn-sm">🔍</button>
+        </div>
+        <div id="gp4" class="hidden p-2 bg-green-100 rounded text-xs font-semibold text-green-700">✅ somewhere</div>
+
+        <div class="bg-white p-2 rounded-xl">6. We can't go climbing because ______________ brought any rope.
+          <button onclick="toggle('gp5')" class="ml-2 reveal-btn-sm">🔍</button>
+        </div>
+        <div id="gp5" class="hidden p-2 bg-green-100 rounded text-xs font-semibold text-green-700">✅ no one</div>
+      </div>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>Wonderful!</strong> Now let's learn the other grammar from the story: <em>should</em>, <em>must</em>, and <em>need to</em>.
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 8: GRAMMAR – MODALS -->
+<section class="slide">
+  <div class="max-w-5xl mx-auto">
+    <div class="transition-top">
+      🛡️ <strong>Grammar Spotlight: should / must / need to.</strong> These three expressions all give advice or rules — but with different strength. Let's see how they're used in the story about Hannah.
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">🛡️</span>
+      <h2 class="text-3xl text-cyan-600">should / must / need to</h2>
+      <span class="ml-auto badge">12 min</span>
+    </div>
+
+    <div class="grammar-spotlight mb-4">
+      <div class="space-y-3">
+        <div class="p-3 bg-green-50 border-2 border-green-300 rounded-2xl">
+          <p class="font-bold text-green-800">🟢 <em>should</em> – advice or a good idea</p>
+          <p class="text-sm text-gray-700 mt-1"><em>"We <strong>should</strong> go back to the village."</em> → It's a good idea.</p>
+          <p class="text-sm text-gray-700"><em>"You <strong>should</strong> wait here with Hannah."</em> → I recommend it.</p>
+        </div>
+        <div class="p-3 bg-amber-50 border-2 border-amber-300 rounded-2xl">
+          <p class="font-bold text-amber-800">🟠 <em>must / mustn't</em> – obligation or rule</p>
+          <p class="text-sm text-gray-700 mt-1"><em>"We <strong>must</strong> be quick."</em> → It's necessary.</p>
+          <p class="text-sm text-gray-700"><em>"You <strong>mustn't</strong> try to move."</em> → Don't do it!</p>
+        </div>
+        <div class="p-3 bg-blue-50 border-2 border-blue-300 rounded-2xl">
+          <p class="font-bold text-blue-800">🔵 <em>need to</em> – it's necessary for someone</p>
+          <p class="text-sm text-gray-700 mt-1"><em>"She <strong>needs to</strong> keep warm."</em> → It's necessary for her.</p>
+          <p class="text-sm text-gray-700"><em>"You don't <strong>need to</strong> stay with me."</em> → It isn't necessary.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-cyan-50 p-4 rounded-2xl border-2 border-cyan-300">
+      <h3 class="font-bold text-cyan-800 mb-3">✏️ Practice: Fill in the blanks in your notebook.</h3>
+      <div class="space-y-2 text-sm">
+        <div class="bg-white p-2 rounded-xl">1. Hannah has broken her leg. She <strong>needs to</strong> rest.
+        </div>
+        <div class="bg-white p-2 rounded-xl">2. It's getting late. We ______________ go back to the village now.
+          <button onclick="toggle('md1')" class="ml-2 reveal-btn-sm">🔍</button>
+        </div>
+        <div id="md1" class="hidden p-2 bg-green-100 rounded text-xs font-semibold text-green-700">✅ should / must</div>
+
+        <div class="bg-white p-2 rounded-xl">3. You ______________ leave Hannah alone. She is hurt.
+          <button onclick="toggle('md2')" class="ml-2 reveal-btn-sm">🔍</button>
+        </div>
+        <div id="md2" class="hidden p-2 bg-green-100 rounded text-xs font-semibold text-green-700">✅ mustn't</div>
+
+        <div class="bg-white p-2 rounded-xl">4. You ______________ wear a helmet when you ski.
+          <button onclick="toggle('md3')" class="ml-2 reveal-btn-sm">🔍</button>
+        </div>
+        <div id="md3" class="hidden p-2 bg-green-100 rounded text-xs font-semibold text-green-700">✅ should / must / need to</div>
+
+        <div class="bg-white p-2 rounded-xl">5. I ______________ go to the shop. We don't have any food.
+          <button onclick="toggle('md4')" class="ml-2 reveal-btn-sm">🔍</button>
+        </div>
+        <div id="md4" class="hidden p-2 bg-green-100 rounded text-xs font-semibold text-green-700">✅ need to</div>
+      </div>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>Now let's put everything together!</strong> Time for a Jeopardy competition — teams, get ready!
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 9: JEOPARDY -->
+<section class="slide">
+  <div class="max-w-6xl mx-auto">
+    <div class="transition-top">
+      🏆 <strong>Jeopardy!</strong> 4 categories. Each cell has a question worth points. Team raises hand first → answers → click to reveal. Click a cell to mark it "used." Play until all cells are gone!
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">🏆</span>
+      <h2 class="text-3xl text-cyan-600">Jeopardy Team Competition</h2>
+      <span class="ml-auto badge">20 min</span>
+    </div>
+
+    <div class="jeopardy-board mb-4">
+      <div class="jeopardy-cat">📖 Story</div>
+      <div class="jeopardy-cat">🔤 Grammar</div>
+      <div class="jeopardy-cat">🎒 Vocabulary</div>
+      <div class="jeopardy-cat">🎲 Wild Card</div>
+
+      <!-- Row 1 -->
+      <div class="jeopardy-cell" onclick="openJ(this, 'Who hurt their head?', 'Hannah.', 10)">10</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Complete: ___ was lost.', 'Someone was lost.', 10)">10</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'What do you use to make a fire?', 'Matches.', 10)">10</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Say the word: 🧭', 'Compass!', 10)">10</div>
+
+      <!-- Row 2 -->
+      <div class="jeopardy-cell" onclick="openJ(this, 'Where were they drinking hot chocolate?', 'In a café in the mountains.', 20)">20</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Complete: Is there ___ to eat?', 'anything', 20)">20</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Where do you sleep outdoors?', 'In a shelter / on a sleeping mat.', 20)">20</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Say the word: ⛺', 'Shelter!', 20)">20</div>
+
+      <!-- Row 3 -->
+      <div class="jeopardy-cell" onclick="openJ(this, 'Who went to get help?', 'Sammy.', 30)">30</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Complete: I can\'t find ___ in my rucksack.', 'anything', 30)">30</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'What do you use to find your way?', 'A compass.', 30)">30</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Tongue twister: say "She sells seashells" 3x fast!', 'Great job!', 30)">30</div>
+
+      <!-- Row 4 -->
+      <div class="jeopardy-cell" onclick="openJ(this, 'Who said "You\'re such a baby!"?', 'Hannah.', 40)">40</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Complete: We ___ be quick!', 'must', 40)">40</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'What keeps you warm at night?', 'A blanket.', 40)">40</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Say the word: 🩹', 'Bandage / plaster!', 40)">40</div>
+
+      <!-- Row 5 -->
+      <div class="jeopardy-cell" onclick="openJ(this, 'Why didn\'t Dad\'s phone work?', 'No signal in the mountains.', 50)">50</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Complete: You ___ leave Hannah alone.', 'mustn\'t', 50)">50</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'What do you use if someone is hurt?', 'A first-aid kit.', 50)">50</div>
+      <div class="jeopardy-cell" onclick="openJ(this, 'Wild! Give 3 indefinite pronouns in 5 seconds.', 'Any 3: someone, nothing, everywhere...', 50)">50</div>
+    </div>
+
+    <div id="jeopardy-modal" class="modal-overlay">
+      <div class="modal-card" style="border-top-color:#0891b2;">
+        <div class="text-center">
+          <p class="text-sm font-bold text-cyan-500 mb-2">QUESTION WORTH <span id="jeopardy-points">10</span> POINTS</p>
+          <h3 id="jeopardy-question" class="text-2xl font-bold text-cyan-800 mb-4">Question</h3>
+          <button onclick="showJAnswer()" class="bg-amber-500 text-white font-bold px-6 py-3 rounded-full text-sm mb-3">🔍 Reveal Answer</button>
+          <div id="jeopardy-answer" class="hidden p-4 bg-green-100 rounded-xl text-lg font-bold text-green-800"></div>
+          <button onclick="closeJ()" class="accept-btn mt-4 block mx-auto">✅ Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>What a game!</strong> Now let's get creative. Ready to write and act out your own ending to the story?
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 10: CREATE YOUR OWN ENDING -->
+<section class="slide">
+  <div class="max-w-5xl mx-auto">
+    <div class="transition-top">
+      ✏️ <strong>Create Your Own Ending!</strong> In groups, read the story starter below. Then write a new ending (5–7 sentences). When you finish, act it out for the class!
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">✏️</span>
+      <h2 class="text-3xl text-cyan-600">Create Your Own Ending</h2>
+      <span class="ml-auto badge">20 min</span>
+    </div>
+
+    <div class="story-starter mb-4">
+      <p class="font-bold text-amber-800 mb-2">📖 The Story Starter:</p>
+      "Sammy and Hannah were skiing when they saw a big dark cave. 'Let's go in!' said Hannah. 'Wait!' said Sammy. 'We don't know what's in there.' But Hannah was already inside. Sammy followed her slowly. Suddenly, they heard a loud noise..."
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="bg-cyan-50 p-4 rounded-2xl border-2 border-cyan-300">
+        <h3 class="font-bold text-cyan-800 mb-2">📝 Instructions</h3>
+        <ol class="list-decimal list-inside text-sm text-gray-700 space-y-1">
+          <li>Work in groups of 3–4.</li>
+          <li>Write an ending of 5–7 sentences.</li>
+          <li>Use at least <strong>2 indefinite pronouns</strong>.</li>
+          <li>Use at least <strong>1 modal verb</strong> (<em>should / must / need to</em>).</li>
+          <li>Act it out for another group!</li>
+        </ol>
+        <p class="text-xs text-gray-500 mt-2">⏱️ 10 minutes for writing, 10 minutes for performances.</p>
+      </div>
+      <div class="bg-amber-50 p-4 rounded-2xl border-2 border-amber-300">
+        <h3 class="font-bold text-amber-800 mb-2">💡 Ideas to get you started</h3>
+        <ul class="text-sm text-gray-700 space-y-1">
+          <li>🐻 What if it was an animal?</li>
+          <li>💧 What if they found water inside?</li>
+          <li>🗺️ What if they discovered a secret?</li>
+          <li>🌪️ What if there was a storm?</li>
+          <li>😱 What if it was dark and they got lost?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="help-phrases">
+      <p class="font-bold">💬 Help Phrases:</p>
+      <p>"Then they saw..." • "Someone was..." • "Everything was..." • "We must..." • "We should..." • "They need to..."</p>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>Amazing stories!</strong> Now for the final activity: let's plan a real trip in Colombia!
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 11: TRIP GUIDE -->
+<section class="slide">
+  <div class="max-w-5xl mx-auto">
+    <div class="transition-top">
+      🗺️ <strong>Trip Guide Mini-Poster!</strong> In groups, plan a real trip in Colombia (or any country). Create a mini-poster with the destination, activities, and recommendations. You'll present it to the class!
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <span class="text-3xl">🗺️</span>
+      <h2 class="text-3xl text-cyan-600">Trip Guide Mini-Poster</h2>
+      <span class="ml-auto badge">15 min</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-cyan-50 p-4 rounded-2xl border-2 border-cyan-300">
+        <h3 class="font-bold text-cyan-800 mb-2">📋 Your Poster Must Include</h3>
+        <ul class="text-sm text-gray-700 space-y-1">
+          <li>📍 <strong>Destination</strong> – Where are you going?</li>
+          <li>🎯 <strong>Activities</strong> – What can you do there?</li>
+          <li>🎒 <strong>What to bring</strong> – You <em>should / must / need to</em> bring...</li>
+          <li>💡 <strong>Tips</strong> – Keep safe, keep warm, keep dry...</li>
+          <li>🎨 <strong>An illustration or emoji scene</strong></li>
+        </ul>
+        <p class="text-xs text-gray-500 mt-2">⏱️ 10 min to create, 5 min to present.</p>
+      </div>
+
+      <div class="trip-sample">
+        <p class="font-bold text-green-800 mb-2">🌴 Sample: Tayrona National Park</p>
+        <p>📍 <strong>WHERE:</strong> Santa Marta, Colombia</p>
+        <p>🎯 <strong>ACTIVITIES:</strong> hiking, swimming, camping, birdwatching</p>
+        <p>🎒 <strong>YOU MUST BRING:</strong></p>
+        <ul class="ml-4 list-disc">
+          <li>A tent or shelter</li>
+          <li>A first-aid kit</li>
+          <li>A compass (no phone signal)</li>
+          <li>Water and food for 2 days</li>
+        </ul>
+        <p class="mt-2">💡 <strong>TIPS:</strong></p>
+        <ul class="ml-4 list-disc">
+          <li>You <strong>should</strong> keep your food in a rucksack.</li>
+          <li>You <strong>must</strong> keep dry — weather can change.</li>
+          <li>Don't leave <strong>anything</strong> behind. Keep the park clean!</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="help-phrases mt-4">
+      <p class="font-bold">💬 Help Phrases for Your Poster:</p>
+      <p>"You should..." • "You must..." • "You need to..." • "Don't forget to bring..." • "It's important to..."</p>
+    </div>
+
+    <div class="transition-bottom">
+      ➡️ <strong>Wonderful trip guides!</strong> Let's finish with a quick review of everything we did today.
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 12: CLOSING -->
+<section class="slide">
+  <div class="max-w-3xl mx-auto">
+    <div class="transition-top">
+      🎉 <strong>What a great class!</strong> Today we played games, wrote a dictation, read an adventure story, learned indefinite pronouns and modals, and created a trip guide. Let's review the key points!
+    </div>
+    <div class="text-center">
+      <div class="bg-gradient-to-r from-cyan-600 to-blue-600 rounded-3xl p-10 text-white shadow-2xl border-b-8 border-cyan-300">
+        <h1 class="text-5xl font-bold mb-3">🎉 Great Job!</h1>
+        <p class="text-xl text-cyan-100 mb-6">Today's adventure was amazing!</p>
+        <div class="bg-white/20 p-5 rounded-2xl text-left">
+          <h3 class="text-xl font-bold text-cyan-100 mb-2">📌 What We Did</h3>
+          <ul class="text-white font-semibold space-y-1 text-sm">
+            <li>✓ Guessed objects with indefinite pronouns</li>
+            <li>✓ Played Broken Phone</li>
+            <li>✓ Wrote a dictation + peer-corrected</li>
+            <li>✓ Read "An Accident in the Mountains"</li>
+            <li>✓ Learned: someone, nothing, everywhere...</li>
+            <li>✓ Learned: should / must / need to</li>
+            <li>✓ Created our own story endings</li>
+            <li>✓ Planned a real trip in Colombia</li>
+          </ul>
+        </div>
+        <div class="mt-6 bg-white/20 p-4 rounded-2xl text-left">
+          <h3 class="text-lg font-bold text-cyan-100 mb-2">📖 Next Class</h3>
+          <ul class="text-white text-sm space-y-1">
+            <li>→ More about Scouting around the world</li>
+            <li>→ Ask about injuries and illnesses</li>
+            <li>→ Read and write quizzes</li>
+          </ul>
+        </div>
+        <p class="mt-8 text-cyan-100 text-lg">See you next class! 👋</p>
+      </div>
+    </div>
+    <div class="transition-bottom">
+      ➡️ <strong>Well done, everyone!</strong> Pack up your things, take your trip guides with you, and I'll see you next class. Have a great day! 👋
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="flex-shrink-0 bg-white border-t-2 border-cyan-200 flex items-center justify-between px-4 py-3 z-40 shadow-lg">
+  <button onclick="prevSlide()" id="prev-btn" class="bg-cyan-500 text-white font-bold px-6 py-3 rounded-full hover:bg-cyan-600 transition text-lg shadow-md disabled:opacity-40 disabled:cursor-not-allowed">← Previous</button>
+  <div class="text-center">
+    <p id="slide-counter-bottom" class="text-sm font-bold text-cyan-600">Slide 1 of 12</p>
+    <p class="text-xs text-gray-400">Use ← → or Space to navigate</p>
+  </div>
+  <button onclick="nextSlide()" id="next-btn" class="bg-cyan-600 text-white font-bold px-6 py-3 rounded-full hover:bg-cyan-700 transition text-lg shadow-md disabled:opacity-40 disabled:cursor-not-allowed">Next →</button>
+</footer>
+
+<script>
+  // ==================== SLIDE NAVIGATION ====================
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  let currentSlide = 0;
+  const menuItems = document.querySelectorAll('.menu-item');
+
+  function showSlide(index) {
+    if (index < 0) index = 0;
+    if (index >= totalSlides) index = totalSlides - 1;
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'prev');
+      if (i === index) s.classList.add('active');
+      else if (i < index) s.classList.add('prev');
+    });
+    currentSlide = index;
+    document.getElementById('slide-counter').textContent = `${index + 1} / ${totalSlides}`;
+    document.getElementById('slide-counter-bottom').textContent = `Slide ${index + 1} of ${totalSlides}`;
+    document.getElementById('progress-bar').style.width = `${((index + 1) / totalSlides) * 100}%`;
+    menuItems.forEach((m, i) => m.classList.toggle('active', i === index));
+    document.getElementById('prev-btn').disabled = (index === 0);
+    document.getElementById('next-btn').disabled = (index === totalSlides - 1);
+  }
+  function nextSlide() { showSlide(currentSlide + 1); }
+  function prevSlide() { showSlide(currentSlide - 1); }
+  function goToSlide(i) { showSlide(i); toggleMenu(); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    if (e.key === 'Escape') { closeMenu(); closePenaltyModal(); closeRewardModal(); closeJ(); }
+  });
+
+  function toggle(id) { const el = document.getElementById(id); if (el) el.classList.toggle('hidden'); }
+  function toggleMenu() { document.getElementById('menu-panel').classList.toggle('open'); document.getElementById('menu-overlay').classList.toggle('hidden'); }
+  function closeMenu() { document.getElementById('menu-panel').classList.remove('open'); document.getElementById('menu-overlay').classList.add('hidden'); }
+
+  // ==================== JEOPARDY ====================
+  let currentJCell = null;
+  let currentJPoints = 0;
+  function openJ(cell, question, answer, points) {
+    if (cell.classList.contains('used')) return;
+    currentJCell = cell;
+    currentJPoints = points;
+    document.getElementById('jeopardy-points').textContent = points;
+    document.getElementById('jeopardy-question').textContent = question;
+    document.getElementById('jeopardy-answer').textContent = '✅ ' + answer;
+    document.getElementById('jeopardy-answer').classList.add('hidden');
+    document.getElementById('jeopardy-modal').classList.add('show');
+  }
+  function showJAnswer() { document.getElementById('jeopardy-answer').classList.remove('hidden'); }
+  function closeJ() {
+    if (currentJCell) currentJCell.classList.add('used');
+    document.getElementById('jeopardy-modal').classList.remove('show');
+    currentJCell = null;
+  }
+
+  // ==================== AUDIO ====================
+  let audioCtx = null;
+  function initAudio() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+  function playWarningSound() {
+    initAudio();
+    const now = audioCtx.currentTime;
+    [0, 0.18].forEach(offset => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.001, now + offset);
+      gain.gain.linearRampToValueAtTime(0.12, now + offset + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.14);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(now + offset);
+      osc.stop(now + offset + 0.16);
+    });
+  }
+  function playEruptionSound() {
+    initAudio();
+    const now = audioCtx.currentTime;
+    const bufferSize = audioCtx.sampleRate * 2.5;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(250, now);
+    filter.frequency.exponentialRampToValueAtTime(80, now + 2);
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.35, now + 0.15);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 2.3);
+    noise.connect(filter).connect(gain).connect(audioCtx.destination);
+    noise.start(now);
+    noise.stop(now + 2.4);
+    const sub = audioCtx.createOscillator();
+    const subGain = audioCtx.createGain();
+    sub.type = 'sine';
+    sub.frequency.setValueAtTime(90, now);
+    sub.frequency.exponentialRampToValueAtTime(35, now + 2);
+    subGain.gain.setValueAtTime(0.001, now);
+    subGain.gain.linearRampToValueAtTime(0.25, now + 0.15);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.3);
+    sub.connect(subGain).connect(audioCtx.destination);
+    sub.start(now);
+    sub.stop(now + 2.4);
+  }
+
+  // ==================== VOLCANO ====================
+  let volcanoLevel = 0;
+  let peakLevel = 0;
+  let sessionStars = 0;
+
+  const levelConfig = {
+    10:  { type: 'warning', message: '⚠️ I heard Spanish! Let\'s switch back to English.' },
+    20:  { type: 'warning', message: '⚠️⚠️ Last warning! Next click = penalty!' },
+    30:  { type: 'penalty', category: 'silly', scope: 'person' },
+    40:  { type: 'penalty', category: 'silly', scope: 'person' },
+    50:  { type: 'penalty', category: 'silly', scope: 'person' },
+    60:  { type: 'penalty', category: 'productive', scope: 'group' },
+    70:  { type: 'penalty', category: 'productive', scope: 'group' },
+    80:  { type: 'penalty', category: 'productive', scope: 'group' },
+    90:  { type: 'penalty', category: 'productive', scope: 'class' },
+    100: { type: 'eruption', scope: 'class' }
+  };
+
+  const sillyPenalties = [
+    { name: '🎭 The Dramatic Soap Opera', text: 'Hand on heart dramatically, look at the ceiling, and gasp: "Alas! My English has escaped me like a bird in the wind! Forgive me, noble audience!"' },
+    { name: '👑 The Shakespearean Apology', text: 'Bow deeply to the left, then to the right, and recite: "Hark! I did speak the forbidden language of my ancestors. I shall now return to the King\'s English!"' },
+    { name: '🤖 The Sci-Fi System Reboot', text: 'Stand stiffly, blink rapidly like a robot, and say: "Bleep bloop. Spanish virus detected. Re-installing English software... 99% complete. System restored."' },
+    { name: '🌦️ The Weather Reporter', text: 'Map out a fake green screen with your hands and report: "Breaking news! A massive cloud of Spanish just swept through the classroom, but bright English sunshine is returning immediately!"' },
+    { name: '🎸 The Air Guitar Solo', text: 'Play an invisible guitar for 10 seconds while saying "I speak English, I rock!" three times.' },
+    { name: '🕺 The Interpretive Dance', text: 'Do a 10-second dance showing how you feel about speaking Spanish.' },
+    { name: '🐌 The Slow-Motion Walk', text: 'Walk to the door and back in extreme slow motion, saying "I... will... speak... English..."' },
+    { name: '🎙️ The News Anchor', text: 'Report the "breaking news" that Spanish was heard in the classroom, using a serious news voice.' },
+    { name: '🎭 The Mime Artist', text: 'Act out a scene silently for 15 seconds. The class guesses what it was.' },
+    { name: '🎤 The Opera Singer', text: 'Sing your next sentence in an opera voice.' },
+    { name: '🤖 The Robot Voice', text: 'Speak in a robot voice for the next 30 seconds.' },
+    { name: '🦸 The Superhero Pose', text: 'Strike a superhero pose and say "I am Captain English, defender of the language!"' },
+    { name: '👏 The Compliment Storm', text: 'Give 3 sincere compliments to 3 different classmates in English.' },
+    { name: '🐢 The Turtle Talk', text: 'Speak in super slow motion for the next 3 sentences.' }
+  ];
+
+  const productivePenalties = [
+    { name: '👅 The Tongue Twister Challenge', text: 'Read this 3 times fast without a mistake: "Six sticky skeletons smiling. Six sticky skeletons smiling. Six sticky skeletons smiling."' },
+    { name: '🔄 The Reverse Translation', text: 'Say these common Spanish phrases in English, out loud to the class:<br>1. ¿Cómo estás?<br>2. Gracias.<br>3. Por favor.<br>4. Buenos días.<br>5. ¿Cómo te llamas?', reveal: '1. How are you? 2. Thank you. 3. Please. 4. Good morning. 5. What is your name?' },
+    { name: '📖 The Word Definition Echo', text: 'Read this word and definition aloud: "Today\'s booster word is \'Gargantuan\' — absolutely massive. Repeat after me: Gargantuan!"' },
+    { name: '🎁 The Mystery Object Ad', text: 'Pick any object on your desk right now. Hold it up like a TV commercial and pitch it to the class:<br>"Are you tired of boring lessons? Buy this amazing [object] today for only one million dollars!"' },
+    { name: '🗣️ The Pronunciation Drill', text: 'Say these 5 tricky words 3 times each, out loud: thorough, thought, through, though, tough.' },
+    { name: '📚 The 30-Second Story', text: 'Tell a 30-second story in English using these 3 words: banana, rocket, umbrella.' },
+    { name: '🎯 The Idiom Challenge', text: 'Use an English idiom in a sentence to describe how you feel right now.' },
+    { name: '🐝 The Spelling Bee', text: 'Spell these 3 words out loud, letter by letter: beautiful, comfortable, favorite.' },
+    { name: '🔤 The Alphabet Race', text: 'Say 5 English words that start with the letter S in 10 seconds.' },
+    { name: '🧩 The Sentence Builder', text: 'Make a sentence in English with these 3 words: elephant, sing, purple.' },
+    { name: '🎭 Two Truths & A Lie', text: 'Tell the class two true things and one lie about yourself in English. Your classmates will guess the lie.' },
+    { name: '🔗 The Synonym Chain', text: 'Give 3 synonyms for the word "happy" in English, out loud.' },
+    { name: '❓ The English Riddle', text: 'Solve this riddle out loud:<br><em>"I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?"</em>', reveal: 'Answer: A map' },
+    { name: '📝 The Definition Echo', text: 'Read this word aloud: "Perseverance — continuing even when it\'s difficult. Repeat after me: Perseverance!"' }
+  ];
+
+  const hardPenalties = [
+    { name: '✍️ The Dictation Challenge', text: 'Listen carefully. The teacher will read 5 sentences out loud. The whole class must write them all correctly in English. No help allowed!', involvesTeacher: true },
+    { name: '📝 Extra Homework', text: 'The whole class must write 10 sentences using indefinite pronouns for next class. Bring them written on paper.' },
+    { name: '📖 The Silent Reading', text: 'The whole class must silently read 1 page of the book (choose any page from Unit 6) and then write a 3-sentence summary in English in your notebook.' },
+    { name: '🗣️ The Class Tongue Twister', text: 'The WHOLE CLASS must say this together 3 times, in perfect sync:<br><em>"She sells seashells by the seashore."</em>' },
+    { name: '🎤 The Group Presentation', text: 'In groups of 3–4, prepare a 1-minute presentation in English about "Why English is Important." Present it to the class.' },
+    { name: '📋 The Vocabulary List', text: 'The whole class must write 20 English words related to camping and outdoor items in their notebooks before the next class.' }
+  ];
+
+  function getPenaltyPool(category) {
+    if (category === 'silly') return sillyPenalties;
+    if (category === 'productive') return productivePenalties;
+    return hardPenalties;
+  }
+
+  function updateVolcanoVisual() {
+    const fill = document.getElementById('volcano-fill');
+    const percentEl = document.getElementById('volcano-percent');
+    fill.style.width = volcanoLevel + '%';
+    percentEl.textContent = volcanoLevel + '%';
+    fill.className = 'volcano-fill';
+    if (volcanoLevel < 20) fill.classList.add('level-1');
+    else if (volcanoLevel < 30) fill.classList.add('level-2');
+    else if (volcanoLevel < 50) fill.classList.add('level-3');
+    else if (volcanoLevel < 70) fill.classList.add('level-4');
+    else if (volcanoLevel < 100) fill.classList.add('level-5');
+    else fill.classList.add('level-6');
+    const header = document.querySelector('header');
+    if (volcanoLevel >= 90) { header.classList.add('shaking'); setTimeout(() => header.classList.remove('shaking'), 500); }
+  }
+
+  function clickSpanish() {
+    volcanoLevel += 10;
+    if (volcanoLevel > 100) volcanoLevel = 100;
+    if (volcanoLevel > peakLevel) peakLevel = volcanoLevel;
+    updateVolcanoVisual();
+    const config = levelConfig[volcanoLevel];
+    if (!config) return;
+    if (config.type === 'warning') { playWarningSound(); showToast(config.message); }
+    else if (config.type === 'penalty') { playWarningSound(); showPenaltyModal(config.category, config.scope); }
+    else if (config.type === 'eruption') { playEruptionSound(); showEruptionModal(); }
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'toast show';
+    if (volcanoLevel <= 10) toast.classList.add('warning-1');
+    else toast.classList.add('warning-2');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  let currentPenaltyCategory = 'silly';
+  let currentPenaltyScope = 'person';
+
+  function showPenaltyModal(category, scope) {
+    currentPenaltyCategory = category;
+    currentPenaltyScope = scope;
+    const modal = document.getElementById('penalty-modal');
+    const card = document.getElementById('penalty-card');
+    const badge = document.getElementById('penalty-level-badge');
+    const title = document.getElementById('penalty-title');
+    const scopeEl = document.getElementById('penalty-scope');
+    const catEl = document.getElementById('penalty-category');
+    const textEl = document.getElementById('penalty-text');
+    const revealWrap = document.getElementById('reveal-answer-wrapper');
+    const revealText = document.getElementById('reveal-answer-text');
+
+    badge.textContent = `LEVEL ${volcanoLevel}%`;
+    card.classList.remove('eruption');
+    title.textContent = '🌋 PENALTY!';
+    scopeEl.className = 'scope-badge ' + (scope === 'person' ? 'scope-person' : scope === 'group' ? 'scope-group' : 'scope-class');
+    scopeEl.textContent = scope === 'person' ? '👤 Person' : scope === 'group' ? '👥 Group' : '🌍 Whole Class';
+    catEl.className = 'category-badge ' + (category === 'silly' ? 'category-silly' : 'category-productive');
+    catEl.textContent = category === 'silly' ? '🎪 Silly Performance' : '🧠 Productive';
+
+    const pool = getPenaltyPool(category);
+    const chosen = pool[Math.floor(Math.random() * pool.length)];
+    textEl.innerHTML = `<div class="text-center mb-2 text-lg font-bold text-cyan-700">${chosen.name}</div><div>${chosen.text}</div>`;
+
+    revealWrap.classList.add('hidden');
+    revealText.classList.add('hidden');
+    revealText.textContent = '';
+    if (chosen.reveal) {
+      revealWrap.classList.remove('hidden');
+      revealText.dataset.answer = chosen.reveal;
+    }
+    modal.classList.add('show');
+  }
+
+  function rerollPenalty() {
+    const pool = getPenaltyPool(currentPenaltyCategory);
+    const chosen = pool[Math.floor(Math.random() * pool.length)];
+    const textEl = document.getElementById('penalty-text');
+    const revealWrap = document.getElementById('reveal-answer-wrapper');
+    const revealText = document.getElementById('reveal-answer-text');
+    textEl.innerHTML = `<div class="text-center mb-2 text-lg font-bold text-cyan-700">${chosen.name}</div><div>${chosen.text}</div>`;
+    revealWrap.classList.add('hidden');
+    revealText.classList.add('hidden');
+    revealText.textContent = '';
+    if (chosen.reveal) {
+      revealWrap.classList.remove('hidden');
+      revealText.dataset.answer = chosen.reveal;
+    }
+  }
+
+  function revealPenaltyAnswer() {
+    const revealText = document.getElementById('reveal-answer-text');
+    revealText.textContent = '✅ ' + (revealText.dataset.answer || '');
+    revealText.classList.remove('hidden');
+  }
+
+  function closePenaltyModal() {
+    const modal = document.getElementById('penalty-modal');
+    if (modal.dataset.resetAfterClose === 'true') {
+      modal.dataset.resetAfterClose = 'false';
+      setTimeout(() => { resetVolcano(); }, 500);
+    }
+    modal.classList.remove('show');
+  }
+
+  function showEruptionModal() {
+    const modal = document.getElementById('penalty-modal');
+    const card = document.getElementById('penalty-card');
+    const badge = document.getElementById('penalty-level-badge');
+    const title = document.getElementById('penalty-title');
+    const scopeEl = document.getElementById('penalty-scope');
+    const catEl = document.getElementById('penalty-category');
+    const textEl = document.getElementById('penalty-text');
+    const revealWrap = document.getElementById('reveal-answer-wrapper');
+    const revealText = document.getElementById('reveal-answer-text');
+    badge.textContent = '💥 ERUPTION!';
+    card.classList.add('eruption');
+    title.textContent = '💥 THE VOLCANO HAS ERUPTED!';
+    scopeEl.className = 'scope-badge scope-class';
+    scopeEl.textContent = '🌍 Whole Class';
+    catEl.className = 'category-badge category-eruption';
+    catEl.textContent = '🔥 Hard Penalty';
+    const chosen = hardPenalties[Math.floor(Math.random() * hardPenalties.length)];
+    textEl.innerHTML = `<div class="text-center mb-2 text-lg font-bold text-red-700">${chosen.name}</div><div>${chosen.text}</div><div class="mt-3 text-center text-sm text-gray-600 italic">After this penalty, the volcano resets to 0%.</div>`;
+    revealWrap.classList.add('hidden');
+    revealText.classList.add('hidden');
+    revealText.textContent = '';
+    modal.classList.add('show');
+    modal.dataset.resetAfterClose = 'true';
+  }
+
+  function resetVolcano() { volcanoLevel = 0; updateVolcanoVisual(); }
+
+  function showReward() {
+    const modal = document.getElementById('reward-modal');
+    const content = document.getElementById('reward-content');
+    let reward = '';
+    let emoji = '';
+    let color = '';
+    if (peakLevel === 0 || peakLevel <= 20) { emoji = '🏆'; color = 'text-yellow-600'; reward = 'GOLD! You spoke English almost the whole class!'; sessionStars += 2; }
+    else if (peakLevel <= 50) { emoji = '🥈'; color = 'text-gray-500'; reward = 'SILVER! Great job staying in English!'; sessionStars += 1; }
+    else if (peakLevel <= 90) { emoji = '🥉'; color = 'text-orange-600'; reward = 'BRONZE! Keep going!'; }
+    else { emoji = '💀'; color = 'text-red-600'; reward = 'You erupted! But you practiced English a lot today!'; }
+    document.getElementById('star-tracker').textContent = `⭐ Session: ${sessionStars}`;
+    content.innerHTML = `
+      <div class="text-7xl mb-4">${emoji}</div>
+      <h2 class="text-3xl font-bold ${color} mb-2">${reward}</h2>
+      <p class="text-sm text-gray-500 mt-3">Peak volcano level this class: <strong>${peakLevel}%</strong></p>
+      <p class="text-sm text-gray-500 mt-1">Stars earned this class: <strong>${sessionStars}</strong></p>
+    `;
+    modal.classList.add('show');
+  }
+  function closeRewardModal() { document.getElementById('reward-modal').classList.remove('show'); }
+
+  showSlide(0);
+</script>
+
+</body>
+</html>
